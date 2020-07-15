@@ -2,6 +2,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 
 import LowerCaseDirective, { typeDef as lowercaseDirective } from './directives/lowercaseDirective';
 import RestDirective, { typeDef as restDirective} from './directives/restDirective';
+import LengthDirective, { typeDefs as lengthDirective, LimitedLengthType } from './directives/lengthDirective';
 
 import { typeDef as bookSchema, resolver as bookResolver } from './book';
 import { typeDef as authorSchema, resolver as authorResolver } from './author';
@@ -12,6 +13,7 @@ export default makeExecutableSchema({
     typeDefs: [
         lowercaseDirective,
         restDirective,
+        lengthDirective,
         bookSchema,
         authorSchema,
         searchSchema,
@@ -22,10 +24,12 @@ export default makeExecutableSchema({
         authorResolver,
         searchResolver,
         userResolver,
+        LimitedLengthType,
     ],
     schemaDirectives: {
         lower: LowerCaseDirective,
         lowerCase: LowerCaseDirective,
         rest: RestDirective,
+        length: LengthDirective,
     },
 })

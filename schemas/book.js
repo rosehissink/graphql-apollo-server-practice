@@ -12,7 +12,7 @@ export const typeDef = gql`
     type TextBook implements Book {
         title: String
         author: Author
-        category: String
+        category: String @length(max: 20)
     }
 
     type ColouringBook implements Book {
@@ -33,10 +33,20 @@ export const typeDef = gql`
         color: String
     }
 
+    input TextBookInput {
+        title: String!
+        author: String
+        category: String! @length(max: 20)
+    }
+
     type Query {
         books: [Book]
         colouringBooks(colour: String): ColouringBook
         colours: [Colour] @rest(url: "colours")
+    }
+    
+    type Mutation {
+        createTextBook(book: TextBookInput!): TextBook
     }
 `;
 
@@ -60,4 +70,17 @@ export const resolver =  {
     Query: {
         books: () => books,
     },
+    Mutation: {
+        createTextBook: (parent, args) => {
+            console.log(args);
+            const newBook = {
+                title: args.book.title,
+                author: {
+                    name: args.book.author,
+                },
+                category: args.book.category
+            };
+            return newBook;
+        }
+    }
 };
